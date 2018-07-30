@@ -1,0 +1,140 @@
+参考链接
+https://blog.csdn.net/wnma3mz/article/details/78570580  介绍详细
+https://www.bilibili.com/video/av11127609/              订阅号接口视频
+https://blog.csdn.net/d1240673769/article/details/75907152  评论讨论issue
+https://www.zhihu.com/question/26716409/answer/224332129   知乎大神
+https://www.zhihu.com/question/31285583
+
+需求
+某某微信公众号历史的所有文章的阅读数和点赞数
+
+难点
+微信公众号历史的所有文章（来源？？？）
+每篇文章的阅读量和点赞量（电脑上浏览文章只显示内容，没有阅读量、点赞量、评论……）
+突破难点一
+1 搜狗微信搜索，可以搜索微信公众号文章。但是貌似只能显示该公众号最近十篇的文章。放弃……
+利用抓包工具（Fiddler），抓取文章。成本有点大……，且貌似只能抓取原创文章。不符合个人需求，放弃……
+2 利用微信个人订阅号进行爬取，神奇的操作。
+3 个人微信订阅号的查看历史
+4 爬公众号最近消息, 定时维护, 那里的信息更全, 比如不仅有日期还有时间
+5 搜索某个公众号, 查看历史, 有标题数据列表
+
+
+ITEM
+
+		公众号
+		title
+		<strong class="profile_nickname">厦门日报</strong>
+		\\strong[@class="profile_nickname"]\text()
+
+
+文章评论数&点赞数
+https://mp.weixin.qq.com/mp/getappmsgext?
+
+appmsgstat
+like_num=28
+read_num=7593
+
+comment_count
+
+文章标题
+https://mp.weixin.qq.com/s?
+
+var msg_title = "正值青春的我  慌的一比";
+r'msg_title\s=\s"(.*?)";'
+
+
+发布时间
+publish_time = "2018-07-27" || "";
+
+r'publish_time\s=\s"(\d+-\d+-\d+)"\s\|\|\s"";'  详细
+r'publish_time.*"(\d+-\d+-\d+)".*'   简略
+
+
+
+APPIUM
+
+
+首页
+# 点击进入搜索
+//android.widget.TextView[@content-desc="Search"]
+# 点击输入搜索内容
+com.tencent.mm:id/hx
+set_text
+KEYWORD = JOKER-1943
+# 点击搜索
+TouchAction(driver).tap(x=1299, y=2605).perform()
+等待某元素
+# 等待3秒
+# 点击公众号
+TouchAction(driver).tap(x=672, y=634).perform()
+
+
+公众号首页
+# 点击右上角人像
+//android.widget.ImageButton[@content-desc="Chat Info"]
+# 点击查看历史
+//android.widget.LinearLayout[8]//*[@resource-id="android:id/title"]
+
+
+公众号文章页
+没有元素
+最差的方案  顺序点击了, 下拉加点击
+
+移动到初始位置
+400+
+# 循环点击每篇文章图片 图片高度500px
+
+# 尝试再点击一次, 如果第一次点击到两个图片的中间, 并不会进入文章
+# 图片与图片间隔180px
+					
+点击退出文章
+com.tencent.mm:id/i2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+进入webview
+webview
+https://testerhome.com/topics/12003
+
+chrome://inspect/#devices
+
+adb shell dumpsys activity top | findstr ACTIVITY
+adb shell ps pid=2385
+com.tencent.mm:tools
+
+先刷新一下
+开始下拉加点击
+元素写在js里
+
+
+
+
+
+
+
+
+
+
+
+
+
